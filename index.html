@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DINZXX SHOP - Top Up Game</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            color: #eef2ff;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* Header Store */
+        .store-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .store-header h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #D4AF37, #F9E45B);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .store-header p {
+            color: #9ca3db;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+        .payment-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .badge {
+            background: #1e2538;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(4px);
+            border: 1px solid #2e3a55;
+        }
+        .badge i {
+            font-size: 1.1rem;
+        }
+        .badge.qris i { color: #00D27F; }
+        .badge.dana i { color: #1B8CFF; }
+        .badge.gopay i { color: #00AA6C; }
+
+        /* Two columns layout */
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        .topup-section {
+            flex: 2;
+            min-width: 280px;
+        }
+        .admin-section {
+            flex: 1.2;
+            min-width: 280px;
+        }
+        /* Cards */
+        .card {
+            background: rgba(18, 25, 45, 0.75);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            border: 1px solid rgba(71, 85, 125, 0.4);
+            padding: 1.8rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #F9E45B;
+            padding-left: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .form-group {
+            margin-bottom: 1.3rem;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #cbd5ff;
+            font-size: 0.9rem;
+        }
+        input, select, .custom-nominal {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: #0f1425;
+            border: 1px solid #2e3a55;
+            border-radius: 1.2rem;
+            color: white;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #F9E45B;
+            box-shadow: 0 0 0 2px rgba(249, 228, 91, 0.3);
+        }
+        .nominal-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
+        }
+        .nominal-btn {
+            background: #1e2538;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #2e3a55;
+            font-size: 0.85rem;
+        }
+        .nominal-btn.active, .nominal-btn:hover {
+            background: #F9E45B;
+            color: #0a0f1e;
+            border-color: #F9E45B;
+        }
+        .method-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.3rem;
+        }
+        .method-item {
+            flex: 1;
+            background: #111827;
+            border-radius: 1.2rem;
+            padding: 0.7rem;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #2e3a55;
+            transition: 0.2s;
+        }
+        .method-item.selected {
+            background: #2a344c;
+            border-color: #F9E45B;
+            box-shadow: 0 0 8px rgba(249,228,91,0.4);
+        }
+        .method-item i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .btn-primary {
+            background: linear-gradient(95deg, #F9E45B, #e6c82e);
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            font-weight: 800;
+            font-size: 1.1rem;
+            border-radius: 2rem;
+            color: #0a0f1e;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+        }
+        .btn-primary:hover {
+            transform: scale(0.98);
+            box-shadow: 0 5px 15px rgba(249,228,91,0.3);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #F9E45B;
+            color: #F9E45B;
+            padding: 0.6rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .payment-detail {
+            background: #0b1020;
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid #F9E45B;
+        }
+        .promo-badge {
+            background: #1f2a3e;
+            border-radius: 1rem;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #F9E45B;
+        }
+        .promo-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+        }
+        .promo-tag {
+            background: #1a2135;
+            border-radius: 20px;
+            padding: 0.3rem 0.9rem;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .promo-tag:hover {
+            background: #2c3857;
+        }
+        hr {
+            border-color: #2a3550;
+            margin: 1rem 0;
+        }
+        .admin-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 1.5rem;
+            padding: 1rem;
+        }
+        .promo-item {
+            background: #0f1425;
+            border-radius: 1rem;
+            padding: 0.7rem;
+            margin-bottom: 0.7rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .delete-promo {
+            background: none;
+            border: none;
+            color: #ff7e6b;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .small-input {
+            padding: 0.6rem;
+            border-radius: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .qris-img {
+            max-width: 180px;
+            margin: 0 auto;
+            display: block;
+            border-radius: 1rem;
+            background: white;
+            padding: 0.5rem;
+        }
+        .copy-btn {
+            background: #1e2a44;
+            border: none;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+        }
+        .warning-text {
+            font-size: 0.75rem;
+            color: #b9c3e6;
+            margin-top: 0.5rem;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.75rem;
+            color: #5b6b9e;
+        }
+        @media (max-width: 800px) {
+            body { padding: 1rem; }
+            .card { padding: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="store-header">
+        <h1>⚡ DINZXX SHOP ⚡</h1>
+        <p>Top Up Game Termurah & Tercepat • 100% Proses Manual 2 Menit</p>
+        <div class="payment-badges">
+            <div class="badge qris"><i class="fas fa-qrcode"></i> QRIS</div>
+            <div class="badge dana"><i class="fas fa-wallet"></i> Dana</div>
+            <div class="badge gopay"><i class="fas fa-mobile-alt"></i> GoPay</div>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <!-- KOLOM KIRI: TOP UP -->
+        <div class="topup-section">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-gamepad"></i> Form Top Up</div>
+                <div class="form-group">
+                    <label><i class="fas fa-dice-d6"></i> Pilih Game</label>
+                    <select id="gameSelect">
+                        <option value="Mobile Legends">🔥 Mobile Legends (MLBB)</option>
+                        <option value="Free Fire">🔫 Free Fire (FF)</option>
+                        <option value="PUBG Mobile">🎯 PUBG Mobile</option>
+                        <option value="Call of Duty Mobile">💥 Call of Duty Mobile</option>
+                        <option value="Genshin Impact">✨ Genshin Impact</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-id-card"></i> ID Game / User ID</label>
+                    <input type="text" id="userId" placeholder="Contoh: 123456789" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-coins"></i> Nominal Top Up (Rp)</label>
+                    <div class="nominal-options" id="nominalOptions">
+                        <span class="nominal-btn" data-nom="10000">Rp 10.000</span>
+                        <span class="nominal-btn" data-nom="20000">Rp 20.000</span>
+                        <span class="nominal-btn" data-nom="50000">Rp 50.000</span>
+                        <span class="nominal-btn" data-nom="100000">Rp 100.000</span>
+                        <span class="nominal-btn" data-nom="custom">Custom</span>
+                    </div>
+                    <input type="number" id="customNominal" placeholder="Masukkan nominal (min 5.000)" style="display:none;" min="5000" step="1000">
+                    <input type="hidden" id="selectedNominal" value="10000">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-credit-card"></i> Metode Pembayaran</label>
+                    <div class="method-group" id="methodGroup">
+                        <div class="method-item" data-method="qris">
+                            <i class="fas fa-qrcode"></i> <span>QRIS</span>
+                        </div>
+                        <div class="method-item" data-method="dana">
+                            <i class="fas fa-wallet"></i> <span>DANA</span>
+                        </div>
+                        <div class="method-item" data-method="gopay">
+                            <i class="fas fa-mobile-alt"></i> <span>GoPay</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-ticket-alt"></i> Kode Promo (opsional)</label>
+                    <div class="flex-between">
+                        <input type="text" id="promoCodeInput" placeholder="Masukkan kode promo" style="flex:1;">
+                        <button type="button" id="applyPromoBtn" class="btn-outline" style="margin-left: 10px; padding: 0.6rem 1.2rem;">Pakai</button>
+                    </div>
+                    <div id="promoFeedback" class="warning-text" style="margin-top: 5px;"></div>
+                </div>
+                <div class="form-group">
+                    <label>✨ Promo Aktif ✨</label>
+                    <div id="activePromosList" class="promo-list">
+                        <!-- promo tags akan diisi js -->
+                    </div>
+                </div>
+                <button class="btn-primary" id="submitTopupBtn"><i class="fas fa-bolt"></i> Proses Top Up & Lihat Pembayaran</button>
+                
+                <!-- Detail pembayaran muncul disini -->
+                <div id="paymentResult" style="margin-top: 1.5rem;"></div>
+            </div>
+        </div>
+
+        <!-- KOLOM KANAN: ADMIN PANEL (kode promo) -->
+        <div class="admin-section">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-lock"></i> Panel Owner</div>
+                <button id="unlockAdminBtn" class="btn-outline" style="width:100%; margin-bottom: 1rem;"><i class="fas fa-key"></i> Buka Panel Admin</button>
+                <div id="adminPanelContent" style="display: none;">
+                    <div style="background:#0e1428; border-radius:1.2rem; padding:1rem;">
+                        <h4 style="margin-bottom: 12px;"><i class="fas fa-percent"></i> Kelola Kode Promo</h4>
+                        <div id="promoListAdmin"></div>
+                        <hr>
+                        <h5>Tambah Promo Baru</h5>
+                        <input type="text" id="newPromoCode" placeholder="Kode (contoh: HEMAT10)" class="small-input" style="width:100%">
+                        <select id="promoType" class="small-input" style="width:100%">
+                            <option value="percentage">Diskon Persen (%)</option>
+                            <option value="fixed">Potongan Langsung (Rp)</option>
+                        </select>
+                        <input type="number" id="promoValue" placeholder="Nilai (misal: 10 atau 5000)" class="small-input" style="width:100%">
+                        <button id="addPromoBtn" class="btn-primary" style="margin-top: 8px; background:#2a3e6e;">+ Tambah Promo</button>
+                        <div class="warning-text" style="margin-top: 12px;">* Owner dapat menambah/hapus promo. Disimpan otomatis di browser.</div>
+                    </div>
+                </div>
+                <div class="warning-text" style="margin-top: 1rem; text-align:center;">
+                    <i class="fas fa-shield-alt"></i> Pembayaran masuk ke: QRIS, DANA, GOPAY toko
+                </div>
+            </div>
+            <!-- info kontak tambahan -->
+            <div class="card" style="background: #0f1425b3;">
+                <div class="flex-between"><span><i class="fab fa-whatsapp"></i> Kontak Admin:</span><span>0895-1554-9623</span></div>
+                <div class="flex-between" style="margin-top: 8px;"><span><i class="fas fa-credit-card"></i> Dana/GoPay:</span><span>0895-1554-9623</span></div>
+                <div class="flex-between" style="margin-top: 8px;"><span><i class="fas fa-qrcode"></i> QRIS:</span><span>Scan gambar di pembayaran</span></div>
+            </div>
+        </div>
+    </div>
+    <footer>© DINZXX SHOP • Top Up game otomatis, proses setelah transfer. Semua promo dikelola owner.</footer>
+</div>
+
+<script>
+    // ---------- DATA PROMO (localStorage) ----------
+    let promos = []; // array {code, type, value}
+    const STORAGE_KEY = "dinzzx_promos";
+    const ADMIN_PASSWORD = "dinzzx123";   // password owner untuk kelola promo
+
+    // Load promos awal
+    function loadPromos() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if(stored) {
+            promos = JSON.parse(stored);
+        } else {
+            // default promo
+            promos = [
+                { code: "WELCOME10", type: "percentage", value: 10 },
+                { code: "NEWUSER5K", type: "fixed", value: 5000 },
+                { code: "DINZZX25", type: "percentage", value: 25 }
+            ];
+            savePromos();
+        }
+        renderPromoList();
+        renderAdminPromoList();
+    }
+
+    function savePromos() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(promos));
+        renderPromoList();
+        renderAdminPromoList();
+    }
+
+    // menampilkan promo di form utama (biar user klik)
+    function renderPromoList() {
+        const container = document.getElementById("activePromosList");
+        if(!container) return;
+        container.innerHTML = "";
+        promos.forEach(promo => {
+            const discText = promo.type === "percentage" ? `${promo.value}% OFF` : `Rp ${promo.value.toLocaleString()} OFF`;
+            const tag = document.createElement("div");
+            tag.className = "promo-tag";
+            tag.innerHTML = `<i class="fas fa-tag"></i> ${promo.code} (${discText})`;
+            tag.addEventListener("click", () => {
+                document.getElementById("promoCodeInput").value = promo.code;
+                document.getElementById("promoFeedback").innerHTML = "✨ Kode promo siap digunakan. Klik 'Pakai' untuk validasi.";
+            });
+            container.appendChild(tag);
+        });
+        if(promos.length === 0) container.innerHTML = "<span class='promo-badge'>Belum ada promo, owner bisa tambah</span>";
+    }
+
+    // admin list dengan hapus
+    function renderAdminPromoList() {
+        const adminContainer = document.getElementById("promoListAdmin");
+        if(!adminContainer) return;
+        if(promos.length === 0) {
+            adminContainer.innerHTML = "<div class='warning-text'>Tidak ada promo. Tambahkan sekarang.</div>";
+            return;
+        }
+        adminContainer.innerHTML = "";
+        promos.forEach((promo, idx) => {
+            const disc = promo.type === "percentage" ? `${promo.value}%` : `Rp ${promo.value.toLocaleString()}`;
+            const div = document.createElement("div");
+            div.className = "promo-item";
+            div.innerHTML = `
+                <div><strong>${promo.code}</strong> <span style="font-size:0.7rem;">${disc}</span></div>
+                <button class="delete-promo" data-index="${idx}"><i class="fas fa-trash-alt"></i></button>
+            `;
+            adminContainer.appendChild(div);
+        });
+        document.querySelectorAll(".delete-promo").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const idx = parseInt(btn.getAttribute("data-index"));
+                if(!isNaN(idx)) {
+                    promos.splice(idx, 1);
+                    savePromos();
+                }
+            });
+        });
+    }
+
+    // Fungsi cek diskon berdasarkan kode
+    function getDiscountedTotal(nominal, promoCode) {
+        if(!promoCode) return { total: nominal, discount: 0, valid: false, message: "" };
+        const found = promos.find(p => p.code.toUpperCase() === promoCode.toUpperCase());
+        if(!found) return { total: nominal, discount: 0, valid: false, message: "Kode promo tidak valid" };
+        let potongan = 0;
+        if(found.type === "percentage") {
+            potongan = nominal * (found.value / 100);
+        } else {
+            potongan = found.value;
+        }
+        if(potongan > nominal) potongan = nominal;
+        let totalAfter = nominal - potongan;
+        return { total: totalAfter, discount: potongan, valid: true, message: `Promo ${found.code} berhasil! Potongan ${found.type === "percentage" ? found.value+"%" : "Rp "+potongan.toLocaleString()}` };
+    }
+
+    // Variabel state
+    let selectedMethod = "qris";
+    let currentNominal = 10000;
+    let appliedPromoCode = "";
+    let lastDiscountInfo = null;
+
+    // UI: metode pembayaran
+    function initMethodSelector() {
+        const methods = document.querySelectorAll(".method-item");
+        methods.forEach(m => {
+            m.addEventListener("click", () => {
+                methods.forEach(mt => mt.classList.remove("selected"));
+                m.classList.add("selected");
+                selectedMethod = m.getAttribute("data-method");
+            });
+        });
+        document.querySelector(".method-item[data-method='qris']").classList.add("selected");
+    }
+
+    // nominal selector
+    function initNominalSelector() {
+        const btns = document.querySelectorAll(".nominal-btn");
+        const customInput = document.getElementById("customNominal");
+        btns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                btns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                const nominalVal = btn.getAttribute("data-nom");
+                if(nominalVal === "custom") {
+                    customInput.style.display = "block";
+                    customInput.value = "";
+                    currentNominal = 0;
+                    document.getElementById("selectedNominal").value = "";
+                } else {
+                    customInput.style.display = "none";
+                    currentNominal = parseInt(nominalVal);
+                    document.getElementById("selectedNominal").value = currentNominal;
+                }
+            });
+        });
+        customInput.addEventListener("input", (e) => {
+            let val = parseInt(e.target.value);
+            if(isNaN(val)) val = 0;
+            if(val < 5000 && val !== 0) customInput.style.borderColor = "#ff7e6b";
+            else customInput.style.borderColor = "#2e3a55";
+            currentNominal = val;
+            document.getElementById("selectedNominal").value = val;
+        });
+        // default active 10k
+        document.querySelector(".nominal-btn[data-nom='10000']").classList.add("active");
+    }
+
+    // get nominal aktif
+    function getActiveNominal() {
+        if(document.getElementById("customNominal").style.display === "block") {
+            let val = parseInt(document.getElementById("customNominal").value);
+            return isNaN(val) ? 0 : val;
+        } else {
+            return currentNominal;
+        }
+    }
+
+    // apply promo
+    document.getElementById("applyPromoBtn").addEventListener("click", () => {
+        const promoInput = document.getElementById("promoCodeInput").value.trim();
+        const nominalNow = getActiveNominal();
+        if(nominalNow <= 0) {
+            document.getElementById("promoFeedback").innerHTML = "⚠️ Masukkan nominal terlebih dahulu!";
+            return;
+        }
+        const result = getDiscountedTotal(nominalNow, promoInput);
+        if(result.valid) {
+            appliedPromoCode = promoInput;
+            lastDiscountInfo = result;
+            document.getElementById("promoFeedback").innerHTML = `✅ ${result.message}. Total setelah diskon: Rp ${result.total.toLocaleString()}`;
+        } else {
+            appliedPromoCode = "";
+            lastDiscountInfo = null;
+            document.getElementById("promoFeedback").innerHTML = `❌ ${result.message}`;
+        }
+    });
+
+    // Generate tampilan pembayaran
+    function showPaymentDetails(game, userId, nominalOriginal, finalTotal, discountAmount, method, promoUsed) {
+        const container = document.getElementById("paymentResult");
+        let paymentHTML = `<div class="payment-detail"><h4><i class="fas fa-receipt"></i> Detail Pesanan</h4>`;
+        paymentHTML += `<p><strong>Game:</strong> ${game}</p><p><strong>User ID:</strong> ${userId}</p>`;
+        paymentHTML += `<p><strong>Nominal asli:</strong> Rp ${nominalOriginal.toLocaleString()}</p>`;
+        if(discountAmount > 0) {
+            paymentHTML += `<p><strong>Diskon:</strong> <span style="color:#F9E45B;">- Rp ${discountAmount.toLocaleString()}</span></p>`;
+        }
+        paymentHTML += `<p><strong>Total Bayar:</strong> 💰 Rp ${finalTotal.toLocaleString()}</p>`;
+        paymentHTML += `<p><strong>Metode:</strong> ${method.toUpperCase()}</p><hr>`;
+        
+        if(method === "qris") {
+            paymentHTML += `<div style="text-align:center;"><p>Scan QRIS berikut untuk melakukan pembayaran:</p>`;
+            paymentHTML += `<img src="https://l.top4top.io/p_37412gxux0.jpeg" alt="QRIS DINZXX SHOP" class="qris-img" style="max-width:200px; border-radius:16px;">`;
+            paymentHTML += `<p class="warning-text">* Scan QRIS dengan aplikasi mobile banking / e-wallet</p></div>`;
+        } else if (method === "dana") {
+            paymentHTML += `<div><p><i class="fas fa-wallet"></i> Transfer ke Nomor DANA:</p>`;
+            paymentHTML += `<div style="background:#101624; padding:0.8rem; border-radius:1rem; text-align:center; font-size:1.4rem; font-weight:bold;">0895-1554-9623</div>`;
+            paymentHTML += `<button class="copy-btn" id="copyDanaBtn">Salin Nomor</button>`;
+            paymentHTML += `<p class="warning-text">* Setelah transfer, pesanan akan diproses otomatis maksimal 5 menit.</p></div>`;
+        } else if (method === "gopay") {
+            paymentHTML += `<div><p><i class="fas fa-mobile-alt"></i> Transfer ke GoPay:</p>`;
+            paymentHTML += `<div style="background:#101624; padding:0.8rem; border-radius:1rem; text-align:center; font-size:1.4rem; font-weight:bold;">0895-1554-9623</div>`;
+            paymentHTML += `<button class="copy-btn" id="copyGopayBtn">Salin Nomor</button>`;
+            paymentHTML += `<p class="warning-text">* Pastikan nominal sesuai total bayar. Konfirmasi via WhatsApp jika perlu.</p></div>`;
+        }
+        paymentHTML += `<div class="warning-text" style="margin-top:12px;"><i class="fas fa-clock"></i> Pembayaran dikonfirmasi manual oleh owner. Top up akan dikirim ke ID Game.</div>`;
+        paymentHTML += `</div>`;
+        container.innerHTML = paymentHTML;
+        // copy event
+        if(method === "dana") {
+            document.getElementById("copyDanaBtn")?.addEventListener("click", () => {
+                navigator.clipboard.writeText("089515549623");
+                alert("Nomor DANA 0895-1554-9623 disalin!");
+            });
+        }
+        if(method === "gopay") {
+            document.getElementById("copyGopayBtn")?.addEventListener("click", () => {
+                navigator.clipboard.writeText("089515549623");
+                alert("Nomor GoPay 0895-1554-9623 disalin!");
+            });
+        }
+        container.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // submit utama
+    document.getElementById("submitTopupBtn").addEventListener("click", () => {
+        const game = document.getElementById("gameSelect").value;
+        const userId = document.getElementById("userId").value.trim();
+        if(!userId) {
+            alert("Masukkan ID Game terlebih dahulu!");
+            return;
+        }
+        let nominalRaw = getActiveNominal();
+        if(nominalRaw <= 0 || nominalRaw < 5000) {
+            alert("Nominal minimal Rp5.000, silakan pilih nominal yang valid.");
+            return;
+        }
+        let promoCodeInput = document.getElementById("promoCodeInput").value.trim();
+        let finalTotal = nominalRaw;
+        let discount = 0;
+        let promoValid = false;
+        let appliedCodeDisplay = "";
+        if(promoCodeInput) {
+            const discRes = getDiscountedTotal(nominalRaw, promoCodeInput);
+            if(discRes.valid) {
+                finalTotal = discRes.total;
+                discount = discRes.discount;
+                promoValid = true;
+                appliedCodeDisplay = promoCodeInput;
+            } else {
+                // promo tidak valid tetap proceed tanpa diskon
+                finalTotal = nominalRaw;
+                discount = 0;
+                appliedCodeDisplay = "";
+                document.getElementById("promoFeedback").innerHTML = `⚠️ ${discRes.message}, promo tidak digunakan.`;
+            }
+        } else {
+            finalTotal = nominalRaw;
+        }
+        // tampilkan pembayaran
+        showPaymentDetails(game, userId, nominalRaw, finalTotal, discount, selectedMethod, appliedCodeDisplay);
+        // optional: reset feedback jika gagal? biarkan.
+    });
+
+    // Admin panel unlock
+    const unlockBtn = document.getElementById("unlockAdminBtn");
+    const adminPanelDiv = document.getElementById("adminPanelContent");
+    unlockBtn.addEventListener("click", () => {
+        const pwd = prompt("🔐 Masukkan Password Owner untuk mengelola promo:", "");
+        if(pwd === ADMIN_PASSWORD) {
+            adminPanelDiv.style.display = "block";
+            unlockBtn.style.display = "none";
+            renderAdminPromoList();
+        } else if(pwd !== null) {
+            alert("Password salah! Akses ditolak.");
+        }
+    });
+
+    // Tambah promo (dari admin panel)
+    document.getElementById("addPromoBtn").addEventListener("click", () => {
+        const code = document.getElementById("newPromoCode").value.trim().toUpperCase();
+        const type = document.getElementById("promoType").value;
+        let value = parseFloat(document.getElementById("promoValue").value);
+        if(!code) { alert("Masukkan kode promo!"); return; }
+        if(isNaN(value) || value <= 0) { alert("Masukkan nilai promo yang valid (>0)"); return; }
+        if(type === "percentage" && value > 100) { alert("Persentase maksimal 100%"); return; }
+        // cek duplikat
+        if(promos.some(p => p.code === code)) { alert("Kode promo sudah ada!"); return; }
+        promos.push({ code: code, type: type, value: type === "percentage" ? value : Math.floor(value) });
+        savePromos();
+        document.getElementById("newPromoCode").value = "";
+        document.getElementById("promoValue").value = "";
+        renderAdminPromoList();
+        alert(`Promo ${code} berhasil ditambahkan!`);
+    });
+
+    // inisialisasi
+    loadPromos();
+    initMethodSelector();
+    initNominalSelector();
+    // validasi custom nominal update promo feedback saat ubah nominal
+    const customNom = document.getElementById("customNominal");
+    customNom.addEventListener("change", () => {
+        if(appliedPromoCode) {
+            const nominalNow = getActiveNominal();
+            const res = getDiscountedTotal(nominalNow, appliedPromoCode);
+            if(res.valid) {
+                document.getElementById("promoFeedback").innerHTML = `✅ ${res.message}. Total setelah diskon: Rp ${res.total.toLocaleString()}`;
+                lastDiscountInfo = res;
+            } else {
+                document.getElementById("promoFeedback").innerHTML = `⚠️ Promo tidak berlaku lagi.`;
+                appliedPromoCode = "";
+            }
+        }
+    });
+    // event nominal buttons
+    document.querySelectorAll(".nominal-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            if(appliedPromoCode) {
+                const nominalNow = getActiveNominal();
+                const res = getDiscountedTotal(nominalNow, appliedPromoCode);
+                if(res.valid) {
+                    document.getElementById("promoFeedback").innerHTML = `✅ ${res.message}. Total: Rp ${res.total.toLocaleString()}`;
+                } else {
+                    document.getElementById("promoFeedback").innerHTML = `⚠️ Promo tidak berlaku untuk nominal ini.`;
+                    appliedPromoCode = "";
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
